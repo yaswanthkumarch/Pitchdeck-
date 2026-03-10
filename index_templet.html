@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nexa1 - AI Assessment & Interview Platform</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', -apple-system, sans-serif; background: #0a0a0a; color: white; overflow: hidden; }
+    
+    .slides-container { position: relative; width: 100%; height: 100vh; }
+    .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100vh; padding: 35px 50px 90px 50px; display: flex; flex-direction: column; overflow: hidden; opacity: 0; pointer-events: none; transition: opacity 0.4s ease-in-out; }
+    .slide.active { opacity: 1; pointer-events: all; z-index: 1; }
+    
+    .slide-number { position: absolute; bottom: 20px; right: 30px; font-size: 12px; color: rgba(255,255,255,0.4); font-weight: 500; }
+    .section-tag { display: inline-block; padding: 6px 14px; border-radius: 100px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+    .tag-purple { background: rgba(79, 93, 255, 0.15); border: 1px solid rgba(79, 93, 255, 0.4); color: #818CF8; }
+    .tag-green { background: rgba(34, 197, 94, 0.15); border: 1px solid rgba(34, 197, 94, 0.4); color: #22c55e; }
+    .tag-orange { background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.4); color: #f59e0b; }
+    .tag-cyan { background: rgba(6, 182, 212, 0.15); border: 1px solid rgba(6, 182, 212, 0.4); color: #06b6d4; }
+    .slide-header { text-align: center; margin-bottom: 30px; flex-shrink: 0; }
+    .slide-title { font-size: 32px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.5px; }
+    .slide-subtitle { font-size: 14px; color: rgba(255,255,255,0.6); }
+
+    /* Slide 1 */
+    .slide-1 { background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%); justify-content: center; align-items: center; text-align: center; }
+    .slide-1::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 20%, rgba(79, 93, 255, 0.2) 0%, transparent 50%), radial-gradient(ellipse at 70% 80%, rgba(6, 182, 212, 0.15) 0%, transparent 50%); pointer-events: none; }
+    .logo-container { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; }
+    .logo-icon { width: 48px; height: 48px; background: linear-gradient(135deg, #4F5DFF 0%, #06b6d4 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 800; box-shadow: 0 12px 28px rgba(79, 93, 255, 0.35); }
+    .logo-text { font-size: 32px; font-weight: 800; background: linear-gradient(135deg, #fff 0%, #818CF8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .main-title { font-size: 48px; font-weight: 900; line-height: 1.15; margin-bottom: 16px; letter-spacing: -1.5px; }
+    .title-highlight { background: linear-gradient(135deg, #4F5DFF 0%, #06b6d4 50%, #22c55e 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .subtitle { font-size: 16px; color: rgba(255,255,255,0.7); max-width: 580px; line-height: 1.5; margin-bottom: 32px; }
+    .feature-pills { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-bottom: 40px; }
+    .feature-pill { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 8px 16px; border-radius: 100px; font-size: 13px; color: rgba(255,255,255,0.8); display: flex; align-items: center; gap: 6px; }
+    .presenter-info { position: absolute; bottom: 40px; left: 50px; text-align: left; }
+    .presenter-name { font-size: 14px; font-weight: 600; color: white; }
+    .presenter-role { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 3px; }
+
+    /* Slide 2 */
+    .slide-2 { background: linear-gradient(180deg, #0a0a0a 0%, #0d1117 100%); }
+    .assessment-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; flex: 1; min-height: 0; }
+    .assessment-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 22px 18px; position: relative; transition: all 0.3s ease; }
+    .assessment-card:hover { background: rgba(255,255,255,0.05); border-color: rgba(79, 93, 255, 0.4); transform: translateY(-2px); }
+    .card-badge { position: absolute; top: -6px; right: 12px; padding: 4px 10px; border-radius: 100px; font-size: 10px; font-weight: 600; }
+    .badge-purple { background: linear-gradient(135deg, #4F5DFF, #7C3AED); }
+    .badge-green { background: linear-gradient(135deg, #22c55e, #16a34a); }
+    .badge-cyan { background: linear-gradient(135deg, #06b6d4, #0891b2); }
+    .assessment-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 14px; }
+    .icon-purple { background: rgba(79, 93, 255, 0.15); }
+    .icon-green { background: rgba(34, 197, 94, 0.15); }
+    .icon-cyan { background: rgba(6, 182, 212, 0.15); }
+    .icon-orange { background: rgba(245, 158, 11, 0.15); }
+    .assessment-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+    .assessment-desc { font-size: 12px; color: rgba(255,255,255,0.6); line-height: 1.5; margin-bottom: 12px; }
+    .assessment-features { display: flex; flex-wrap: wrap; gap: 5px; }
+    .assessment-tag { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 3px 8px; border-radius: 4px; font-size: 10px; color: rgba(255,255,255,0.65); }
+
+    /* Slide 3 */
+    .slide-3 { background: #0a0a0a; }
+    .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; flex: 1; min-height: 0; }
+    .content-box { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 24px; overflow: hidden; }
+    .box-header { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .box-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+    .box-title { font-size: 16px; font-weight: 700; }
+    .score-bars { display: flex; flex-direction: column; gap: 12px; }
+    .score-item { display: flex; flex-direction: column; gap: 6px; }
+    .score-label { display: flex; justify-content: space-between; font-size: 12px; }
+    .score-name { color: rgba(255,255,255,0.8); }
+    .score-value { color: #22c55e; font-weight: 600; }
+    .score-bar { height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden; }
+    .score-fill { height: 100%; border-radius: 3px; }
+    .fill-technical { background: linear-gradient(90deg, #4F5DFF, #7C3AED); width: 82%; }
+    .fill-problem { background: linear-gradient(90deg, #22c55e, #16a34a); width: 75%; }
+    .fill-comm { background: linear-gradient(90deg, #f59e0b, #d97706); width: 88%; }
+    .fill-context { background: linear-gradient(90deg, #ec4899, #db2777); width: 70%; }
+    .exam-flow { display: flex; flex-direction: column; gap: 10px; }
+    .flow-step { display: flex; align-items: flex-start; gap: 12px; padding: 12px; background: rgba(255,255,255,0.02); border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); }
+    .flow-number { width: 28px; height: 28px; background: linear-gradient(135deg, #4F5DFF, #7C3AED); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+    .flow-content h4 { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+    .flow-content p { font-size: 11px; color: rgba(255,255,255,0.55); line-height: 1.4; }
+
+    /* Slide 4 */
+    .slide-4 { background: linear-gradient(180deg, #0a0a0a 0%, #111827 100%); }
+    .cert-container { display: grid; grid-template-columns: 1.2fr 1fr; gap: 30px; flex: 1; min-height: 0; align-items: center; }
+    .cert-preview { background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(16, 163, 74, 0.05) 100%); border: 1px solid rgba(34, 197, 94, 0.2); border-radius: 16px; padding: 28px; position: relative; overflow: hidden; }
+    .cert-preview::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #22c55e, #16a34a); }
+    .cert-badge { width: 56px; height: 56px; margin: 0 auto 16px; background: linear-gradient(135deg, #22c55e, #16a34a); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; box-shadow: 0 8px 24px rgba(34, 197, 94, 0.4); }
+    .cert-title { text-align: center; font-size: 14px; color: rgba(255,255,255,0.7); margin-bottom: 6px; }
+    .cert-title span { background: linear-gradient(90deg, #818CF8, #A78BFA); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 700; }
+    .cert-name { text-align: center; font-size: 26px; font-weight: 800; margin-bottom: 8px; }
+    .cert-role { text-align: center; font-size: 14px; color: rgba(255,255,255,0.8); margin-bottom: 16px; }
+    .cert-footer { display: flex; justify-content: space-between; align-items: flex-end; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 16px; }
+    .cert-logo { font-size: 18px; font-weight: 800; }
+    .cert-logo span { color: #3B82F6; }
+    .cert-date { font-size: 11px; color: rgba(255,255,255,0.5); }
+    .cert-signature { text-align: right; }
+    .cert-signature .name { font-size: 12px; font-weight: 600; }
+    .cert-signature .role { font-size: 10px; color: rgba(255,255,255,0.5); }
+    .validation-features { display: flex; flex-direction: column; gap: 14px; }
+    .validation-item { display: flex; align-items: flex-start; gap: 12px; padding: 14px; background: rgba(255,255,255,0.02); border-radius: 12px; border: 1px solid rgba(255,255,255,0.06); }
+    .validation-icon { width: 36px; height: 36px; background: rgba(34, 197, 94, 0.15); border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+    .validation-text h4 { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+    .validation-text p { font-size: 11px; color: rgba(255,255,255,0.55); line-height: 1.4; }
+
+    /* Slide 5 */
+    .slide-5 { background: #0a0a0a; }
+    .demo-container { display: flex; flex-direction: column; flex: 1; min-height: 0; gap: 20px; }
+    .interface-preview { flex: 1; background: linear-gradient(135deg, rgba(79, 93, 255, 0.05) 0%, rgba(6, 182, 212, 0.03) 100%); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; overflow: hidden; display: flex; min-height: 0; }
+    .preview-sidebar { width: 180px; background: rgba(0,0,0,0.3); border-right: 1px solid rgba(255,255,255,0.08); padding: 16px; flex-shrink: 0; }
+    .sidebar-item { display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-radius: 8px; font-size: 12px; color: rgba(255,255,255,0.7); margin-bottom: 4px; transition: all 0.2s; }
+    .sidebar-item:hover { background: rgba(255,255,255,0.05); }
+    .sidebar-item.active { background: rgba(79, 93, 255, 0.2); color: white; }
+    .preview-main { flex: 1; padding: 20px; display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
+    .preview-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-shrink: 0; }
+    .preview-title { font-size: 15px; font-weight: 600; }
+    .preview-actions { display: flex; gap: 8px; }
+    .preview-btn { padding: 6px 14px; border-radius: 6px; font-size: 11px; font-weight: 500; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.8); }
+    .preview-btn.primary { background: linear-gradient(135deg, #4F5DFF, #7C3AED); border: none; color: white; }
+    .candidate-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; flex: 1; min-height: 0; overflow-y: auto; }
+    .candidate-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 14px; }
+    .candidate-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .candidate-avatar { width: 36px; height: 36px; background: linear-gradient(135deg, #4F5DFF, #7C3AED); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 15px; }
+    .candidate-info h4 { font-size: 12px; font-weight: 600; }
+    .candidate-info p { font-size: 10px; color: rgba(255,255,255,0.5); }
+    .score-mini { display: flex; gap: 6px; margin-bottom: 10px; }
+    .score-mini-item { flex: 1; text-align: center; padding: 6px; background: rgba(255,255,255,0.03); border-radius: 6px; }
+    .score-mini-item .value { font-size: 14px; font-weight: 700; }
+    .score-mini-item .label { font-size: 8px; color: rgba(255,255,255,0.5); margin-top: 1px; }
+    .candidate-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+    .candidate-tag { padding: 2px 6px; background: rgba(255,255,255,0.05); border-radius: 3px; font-size: 9px; color: rgba(255,255,255,0.6); }
+    .scroll-indicator { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px; background: rgba(255,255,255,0.02); border-radius: 8px; color: rgba(255,255,255,0.5); font-size: 11px; flex-shrink: 0; }
+    .scroll-indicator span { animation: bounce 1.5s infinite; }
+    @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+
+    /* Slide 6 */
+    .slide-6 { background: linear-gradient(180deg, #0a0a0a 0%, #0d1117 100%); }
+    .benefits-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; flex: 1; min-height: 0; }
+    .benefit-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 20px; position: relative; }
+    .benefit-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; border-radius: 14px 14px 0 0; }
+    .benefit-card:nth-child(1)::before { background: linear-gradient(90deg, #4F5DFF, #7C3AED); }
+    .benefit-card:nth-child(2)::before { background: linear-gradient(90deg, #22c55e, #16a34a); }
+    .benefit-card:nth-child(3)::before { background: linear-gradient(90deg, #06b6d4, #0891b2); }
+    .benefit-card:nth-child(4)::before { background: linear-gradient(90deg, #f59e0b, #d97706); }
+    .benefit-card:nth-child(5)::before { background: linear-gradient(90deg, #ec4899, #db2777); }
+    .benefit-card:nth-child(6)::before { background: linear-gradient(90deg, #818CF8, #A78BFA); }
+    .benefit-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 14px; }
+    .benefit-title { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+    .benefit-desc { font-size: 12px; color: rgba(255,255,255,0.6); line-height: 1.5; }
+
+    /* Slide 7 */
+    .slide-7 { background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%); justify-content: center; align-items: center; text-align: center; }
+    .slide-7::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 0%, rgba(79, 93, 255, 0.25) 0%, transparent 50%), radial-gradient(ellipse at 50% 100%, rgba(6, 182, 212, 0.15) 0%, transparent 50%); pointer-events: none; }
+    .cta-content { position: relative; z-index: 1; }
+    .cta-title { font-size: 38px; font-weight: 900; margin-bottom: 16px; line-height: 1.2; }
+    .cta-subtitle { font-size: 15px; color: rgba(255,255,255,0.7); max-width: 480px; margin: 0 auto 32px; line-height: 1.5; }
+    .cta-buttons { display: flex; gap: 14px; justify-content: center; margin-bottom: 40px; }
+    .cta-button { padding: 14px 28px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; text-decoration: none; }
+    .cta-button-primary { background: linear-gradient(135deg, #4F5DFF 0%, #7C3AED 100%); color: white; border: none; box-shadow: 0 6px 20px rgba(79, 93, 255, 0.3); }
+    .cta-button-secondary { background: transparent; color: white; border: 1px solid rgba(255,255,255,0.2); }
+    .contact-info { display: flex; gap: 32px; justify-content: center; }
+    .contact-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: rgba(255,255,255,0.6); }
+    .contact-icon { width: 28px; height: 28px; background: rgba(255,255,255,0.05); border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 13px; }
+
+    /* Navigation */
+    .nav-controls { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 12px; z-index: 1000; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); padding: 8px 16px; border-radius: 100px; border: 1px solid rgba(255,255,255,0.1); }
+    .nav-btn { width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; font-size: 14px; }
+    .nav-btn:hover { background: rgba(255,255,255,0.2); }
+    .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+    .nav-dots { display: flex; gap: 6px; }
+    .nav-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.3); cursor: pointer; transition: all 0.2s; }
+    .nav-dot.active { background: #4F5DFF; transform: scale(1.3); }
+    .nav-dot:hover { background: rgba(255,255,255,0.5); }
+    .slide-counter { font-size: 11px; color: rgba(255,255,255,0.6); min-width: 40px; text-align: center; }
+    .progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, #4F5DFF, #06b6d4); z-index: 1001; transition: width 0.3s ease; }
+
+    @media (max-width: 1200px) {
+      .slide { padding: 30px 40px 80px 40px; }
+      .slide-title { font-size: 28px; }
+      .main-title { font-size: 38px; }
+      .assessment-grid, .benefits-grid { grid-template-columns: repeat(2, 1fr); }
+      .two-column, .cert-container { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      .slide { padding: 20px 25px 70px 25px; }
+      .main-title { font-size: 28px; }
+      .slide-title { font-size: 24px; }
+      .assessment-grid, .benefits-grid { grid-template-columns: 1fr; }
+      .candidate-cards { grid-template-columns: 1fr; }
+      .preview-sidebar { display: none; }
+      .cta-title { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" id="progressBar"></div>
+  
+  <div class="slides-container">
+    <!-- Slide 1: Title -->
+    <section class="slide slide-1 active">
+      <div class="logo-container">
+        <div class="logo-icon">N</div>
+        <span class="logo-text">Nexa1</span>
+      </div>
+      <h1 class="main-title">AI-Powered Assessment &<br><span class="title-highlight">Interview Platform</span></h1>
+      <p class="subtitle">A comprehensive platform for educational institutions to conduct aptitude assessments, evaluate communication skills, and prepare students for career success.</p>
+      <div class="feature-pills">
+        <div class="feature-pill">📝 Aptitude Tests</div>
+        <div class="feature-pill">💬 Communication Skills</div>
+        <div class="feature-pill">🏆 Certifications</div>
+        <div class="feature-pill">📊 Result Validation</div>
+        <div class="feature-pill">🎤 AI Interviews</div>
+      </div>
+      <div class="presenter-info">
+        <div class="presenter-name">Presented by [Your Name]</div>
+        <div class="presenter-role">College Presentation 2026</div>
+      </div>
+      <div class="slide-number">01 / 07</div>
+    </section>
+
+    <!-- Slide 2: Assessment Types -->
+    <section class="slide slide-2">
+      <div class="slide-header">
+        <div class="section-tag tag-purple">Assessment Capabilities</div>
+        <h2 class="slide-title">Comprehensive Evaluation Modules</h2>
+        <p class="slide-subtitle">Multiple assessment types designed to evaluate students across different dimensions</p>
+      </div>
+      <div class="assessment-grid">
+        <div class="assessment-card">
+          <div class="card-badge badge-purple">Core Module</div>
+          <div class="assessment-icon icon-purple">📝</div>
+          <h3 class="assessment-title">Skill Conversations</h3>
+          <p class="assessment-desc">Dynamic dialogue that tests technical skills with scenario-based prompts and adaptive follow-up questions.</p>
+          <div class="assessment-features">
+            <span class="assessment-tag">Adaptive Difficulty</span>
+            <span class="assessment-tag">Real-time Scoring</span>
+          </div>
+        </div>
+        <div class="assessment-card">
+          <div class="card-badge badge-green">Language</div>
+          <div class="assessment-icon icon-green">💬</div>
+          <h3 class="assessment-title">Language Assessment</h3>
+          <p class="assessment-desc">Evaluate language proficiency and communication skills through conversational AI interviewer.</p>
+          <div class="assessment-features">
+            <span class="assessment-tag">Fluency Check</span>
+            <span class="assessment-tag">Clarity Score</span>
+          </div>
+        </div>
+        <div class="assessment-card">
+          <div class="card-badge badge-cyan">Hands-on</div>
+          <div class="assessment-icon icon-cyan">💻</div>
+          <h3 class="assessment-title">Coding Exercises</h3>
+          <p class="assessment-desc">Hands-on tasks simulating real-world challenges with automatic grading and feedback.</p>
+          <div class="assessment-features">
+            <span class="assessment-tag">Auto Grading</span>
+            <span class="assessment-tag">Code Analysis</span>
+          </div>
+        </div>
+        <div class="assessment-card">
+          <div class="assessment-icon icon-orange">📋</div>
+          <h3 class="assessment-title">Custom Questions</h3>
+          <p class="assessment-desc">Create custom questions delivered exactly as written for domain-specific assessments.</p>
+          <div class="assessment-features">
+            <span class="assessment-tag">Custom Templates</span>
+            <span class="assessment-tag">Flexible Format</span>
+          </div>
+        </div>
+        <div class="assessment-card">
+          <div class="assessment-icon icon-purple">📄</div>
+          <h3 class="assessment-title">Resume Conversation</h3>
+          <p class="assessment-desc">Validate experience and accomplishments through intelligent resume conversation.</p>
+          <div class="assessment-features">
+            <span class="assessment-tag">Experience Validation</span>
+            <span class="assessment-tag">Project Review</span>
+          </div>
+        </div>
+        <div class="assessment-card">
+          <div class="assessment-icon icon-green">🎯</div>
+          <h3 class="assessment-title">Aptitude Tests</h3>
+          <p class="assessment-desc">Comprehensive aptitude assessments covering logical reasoning, quantitative ability.</p>
+          <div class="assessment-features">
+            <span class="assessment-tag">Timed Tests</span>
+            <span class="assessment-tag">Instant Results</span>
+          </div>
+        </div>
+      </div>
+      <div class="slide-number">02 / 07</div>
+    </section>
+
+    <!-- Slide 3: Communication Evaluation & Exam Flow -->
+    <section class="slide slide-3">
+      <div class="slide-header">
+        <div class="section-tag tag-green">Evaluation System</div>
+        <h2 class="slide-title">Communication Skills & Exam Process</h2>
+        <p class="slide-subtitle">Multi-dimensional scoring and streamlined exam workflow</p>
+      </div>
+      <div class="two-column">
+        <div class="content-box">
+          <div class="box-header">
+            <div class="box-icon icon-green">📊</div>
+            <h3 class="box-title">Multi-Dimensional Scoring</h3>
+          </div>
+          <div class="score-bars">
+            <div class="score-item">
+              <div class="score-label">
+                <span class="score-name">Technical Knowledge</span>
+                <span class="score-value">8.2/10</span>
+              </div>
+              <div class="score-bar"><div class="score-fill fill-technical"></div></div>
+            </div>
+            <div class="score-item">
+              <div class="score-label">
+                <span class="score-name">Problem Solving</span>
+                <span class="score-value">7.5/10</span>
+              </div>
+              <div class="score-bar"><div class="score-fill fill-problem"></div></div>
+            </div>
+            <div class="score-item">
+              <div class="score-label">
+                <span class="score-name">Communication</span>
+                <span class="score-value">8.8/10</span>
+              </div>
+              <div class="score-bar"><div class="score-fill fill-comm"></div></div>
+            </div>
+            <div class="score-item">
+              <div class="score-label">
+                <span class="score-name">Context & Relevance</span>
+                <span class="score-value">7.0/10</span>
+              </div>
+              <div class="score-bar"><div class="score-fill fill-context"></div></div>
+            </div>
+          </div>
+          <p style="font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 16px; line-height: 1.4;">Our AI evaluates speech clarity, answer structure, keyword coverage, and content richness.</p>
+        </div>
+        <div class="content-box">
+          <div class="box-header">
+            <div class="box-icon icon-cyan">🔄</div>
+            <h3 class="box-title">How Students Take Exams</h3>
+          </div>
+          <div class="exam-flow">
+            <div class="flow-step">
+              <div class="flow-number">1</div>
+              <div class="flow-content">
+                <h4>Registration & Profile Setup</h4>
+                <p>Students register, complete personal details, and select assessment type.</p>
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="flow-number">2</div>
+              <div class="flow-content">
+                <h4>Pre-Exam Verification</h4>
+                <p>System checks camera, microphone, network, and initiates proctoring.</p>
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="flow-number">3</div>
+              <div class="flow-content">
+                <h4>AI-Guided Assessment</h4>
+                <p>Interactive session with AI interviewer asking adaptive questions.</p>
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="flow-number">4</div>
+              <div class="flow-content">
+                <h4>Instant Results & Certificate</h4>
+                <p>Immediate scores, detailed feedback, and downloadable certificate.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-number">03 / 07</div>
+    </section>
+
+    <!-- Slide 4: Certificate & Result Validation -->
+    <section class="slide slide-4">
+      <div class="slide-header">
+        <div class="section-tag tag-orange">Certification</div>
+        <h2 class="slide-title">Certificate Generation & Result Validation</h2>
+        <p class="slide-subtitle">Professional certificates with institutional verification capabilities</p>
+      </div>
+      <div class="cert-container">
+        <div class="cert-preview">
+          <div class="cert-badge">✓</div>
+          <div class="cert-title">Certified by <span>nexa1</span></div>
+          <div class="cert-title" style="font-size: 11px; color: rgba(255,255,255,0.5);">This is to certify that</div>
+          <div class="cert-name">[Student Name]</div>
+          <div class="cert-role">has successfully passed the AI Assessment</div>
+          <div class="cert-footer">
+            <div>
+              <div class="cert-logo">nexa1<span>.</span></div>
+              <div class="cert-date">On March 7th, 2026</div>
+            </div>
+            <div class="cert-signature">
+              <div class="name">Authorized Signature</div>
+              <div class="role">Institution Admin</div>
+            </div>
+          </div>
+        </div>
+        <div class="validation-features">
+          <div class="validation-item">
+            <div class="validation-icon">🔒</div>
+            <div class="validation-text">
+              <h4>Secure Verification</h4>
+              <p>Each certificate has a unique ID that institutions can verify through the admin dashboard.</p>
+            </div>
+          </div>
+          <div class="validation-item">
+            <div class="validation-icon">📋</div>
+            <div class="validation-text">
+              <h4>Detailed Score Breakdown</h4>
+              <p>Access complete scoring details including per-question analysis and improvement areas.</p>
+            </div>
+          </div>
+          <div class="validation-item">
+            <div class="validation-icon">🎥</div>
+            <div class="validation-text">
+              <h4>Session Recordings</h4>
+              <p>Review audio/video recordings of the complete interview session for verification.</p>
+            </div>
+          </div>
+          <div class="validation-item">
+            <div class="validation-icon">📊</div>
+            <div class="validation-text">
+              <h4>Proctoring Reports</h4>
+              <p>Access detailed proctoring logs including any flagged events during the assessment.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-number">04 / 07</div>
+    </section>
+
+    <!-- Slide 5: Interface Demo -->
+    <section class="slide slide-5">
+      <div class="slide-header">
+        <div class="section-tag tag-cyan">Platform Interface</div>
+        <h2 class="slide-title">Admin Dashboard Preview</h2>
+        <p class="slide-subtitle">Institutions can monitor, validate, and manage all assessments from one dashboard</p>
+      </div>
+      <div class="demo-container">
+        <div class="interface-preview">
+          <div class="preview-sidebar">
+            <div class="sidebar-item active">📊 Dashboard</div>
+            <div class="sidebar-item">👥 Candidates</div>
+            <div class="sidebar-item">📝 Templates</div>
+            <div class="sidebar-item">📈 Analytics</div>
+            <div class="sidebar-item">🏆 Certificates</div>
+            <div class="sidebar-item">⚙️ Settings</div>
+          </div>
+          <div class="preview-main">
+            <div class="preview-header">
+              <h3 class="preview-title">Recent Assessments</h3>
+              <div class="preview-actions">
+                <div class="preview-btn">Export</div>
+                <div class="preview-btn primary">+ Create Interview</div>
+              </div>
+            </div>
+            <div class="candidate-cards">
+              <div class="candidate-card">
+                <div class="candidate-header">
+                  <div class="candidate-avatar">👤</div>
+                  <div class="candidate-info">
+                    <h4>Rahul Sharma</h4>
+                    <p>Software Developer</p>
+                  </div>
+                </div>
+                <div class="score-mini">
+                  <div class="score-mini-item"><div class="value" style="color: #4F5DFF;">8.2</div><div class="label">Technical</div></div>
+                  <div class="score-mini-item"><div class="value" style="color: #22c55e;">7.5</div><div class="label">Problem</div></div>
+                  <div class="score-mini-item"><div class="value" style="color: #f59e0b;">8.8</div><div class="label">Comm</div></div>
+                </div>
+                <div class="candidate-tags">
+                  <span class="candidate-tag">AI-Vetted</span>
+                  <span class="candidate-tag">Certified</span>
+                </div>
+              </div>
+              <div class="candidate-card">
+                <div class="candidate-header">
+                  <div class="candidate-avatar">👤</div>
+                  <div class="candidate-info">
+                    <h4>Priya Patel</h4>
+                    <p>Data Analyst</p>
+                  </div>
+                </div>
+                <div class="score-mini">
+                  <div class="score-mini-item"><div class="value" style="color: #4F5DFF;">7.8</div><div class="label">Technical</div></div>
+                  <div class="score-mini-item"><div class="value" style="color: #22c55e;">8.1</div><div class="label">Problem</div></div>
+                  <div class="score-mini-item"><div class="value" style="color: #f59e0b;">9.0</div><div class="label">Comm</div></div>
+                </div>
+                <div class="candidate-tags">
+                  <span class="candidate-tag">AI-Vetted</span>
+                  <span class="candidate-tag">In Review</span>
+                </div>
+              </div>
+              <div class="candidate-card">
+                <div class="candidate-header">
+                  <div class="candidate-avatar">👤</div>
+                  <div class="candidate-info">
+                    <h4>Amit Kumar</h4>
+                    <p>Frontend Developer</p>
+                  </div>
+                </div>
+                <div class="score-mini">
+                  <div class="score-mini-item"><div class="value" style="color: #4F5DFF;">9.1</div><div class="label">Technical</div></div>
+                  <div class="score-mini-item"><div class="value" style="color: #22c55e;">8.5</div><div class="label">Problem</div></div>
+                  <div class="score-mini-item"><div class="value" style="color: #f59e0b;">7.9</div><div class="label">Comm</div></div>
+                </div>
+                <div class="candidate-tags">
+                  <span class="candidate-tag">Top Performer</span>
+                  <span class="candidate-tag">Certified</span>
+                </div>
+              </div>
+              <div class="candidate-card">
+                <div class="candidate-header">
+                  <div class="candidate-avatar">👤</div>
+                  <div class="candidate-info">
+                    <h4>Sneha Gupta</h4>
+                    <p>Backend Engineer</p>
+                  </div>
+                </div>
+                <div class="score-mini">
+                  <div class="score-mini-item"><div class="value" style="color: #4F5DFF;">8.0</div><div class="label">Technical</div></div>
+                  <div class="score-mini-item"><div class="value" style="color: #22c55e;">7.2</div><div class="label">Problem</div></div>
+                  <div class="score-mini-item"><div class="value" style="color: #f59e0b;">8.4</div><div class="label">Comm</div></div>
+                </div>
+                <div class="candidate-tags">
+                  <span class="candidate-tag">AI-Vetted</span>
+                  <span class="candidate-tag">Pending</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="scroll-indicator">
+          <span>↓</span> Scroll through candidate cards to view detailed results
+        </div>
+      </div>
+      <div class="slide-number">05 / 07</div>
+    </section>
+
+    <!-- Slide 6: Institutional Benefits -->
+    <section class="slide slide-6">
+      <div class="slide-header">
+        <div class="section-tag tag-purple">For Institutions</div>
+        <h2 class="slide-title">Why Colleges Choose Nexa1</h2>
+        <p class="slide-subtitle">Empowering institutions with scalable, efficient assessment solutions</p>
+      </div>
+      <div class="benefits-grid">
+        <div class="benefit-card">
+          <div class="benefit-icon icon-purple">📈</div>
+          <h3 class="benefit-title">Scalable Assessments</h3>
+          <p class="benefit-desc">Conduct thousands of assessments simultaneously without additional faculty or infrastructure.</p>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon icon-green">✅</div>
+          <h3 class="benefit-title">Result Validation</h3>
+          <p class="benefit-desc">Verify all student results with complete audit trails, recordings, and proctoring reports.</p>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon icon-cyan">🎯</div>
+          <h3 class="benefit-title">Consistent Evaluation</h3>
+          <p class="benefit-desc">Standardized rubric ensures every student is evaluated fairly with the same criteria.</p>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon icon-orange">💰</div>
+          <h3 class="benefit-title">Cost Efficient</h3>
+          <p class="benefit-desc">Reduce reliance on external evaluators and manual proctoring with AI automation.</p>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon" style="background: rgba(236, 72, 153, 0.15);">📊</div>
+          <h3 class="benefit-title">Data Insights</h3>
+          <p class="benefit-desc">Access detailed analytics on performance, identify curriculum gaps, and track improvement.</p>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon icon-purple">🏆</div>
+          <h3 class="benefit-title">Placement Ready</h3>
+          <p class="benefit-desc">Better-prepared students lead to higher placement rates and enhanced reputation.</p>
+        </div>
+      </div>
+      <div class="slide-number">06 / 07</div>
+    </section>
+
+    <!-- Slide 7: Call to Action -->
+    <section class="slide slide-7">
+      <div class="cta-content">
+        <div class="section-tag tag-green" style="margin-bottom: 20px;">Ready to Get Started?</div>
+        <h2 class="cta-title">Transform Your Institution's<br><span class="title-highlight">Assessment Process</span></h2>
+        <p class="cta-subtitle">Join forward-thinking educational institutions using AI to prepare students for career success with scalable, efficient, and fair assessments.</p>
+        <div class="cta-buttons">
+          <a href="#" class="cta-button cta-button-primary">🚀 Schedule Demo</a>
+          <a href="#" class="cta-button cta-button-secondary">📧 Contact Us</a>
+        </div>
+        <div class="contact-info">
+          <div class="contact-item">
+            <div class="contact-icon">🌐</div>
+            <span>www.nexa1.ai</span>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">📧</div>
+            <span>hello@nexa1.ai</span>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">📍</div>
+            <span>[Your College Name]</span>
+          </div>
+        </div>
+      </div>
+      <div class="slide-number">07 / 07</div>
+    </section>
+  </div>
+
+  <!-- Navigation Controls -->
+  <div class="nav-controls">
+    <button class="nav-btn" id="prevBtn" onclick="navigate(-1)">←</button>
+    <div class="nav-dots" id="navDots"></div>
+    <div class="slide-counter" id="slideCounter">1 / 7</div>
+    <button class="nav-btn" id="nextBtn" onclick="navigate(1)">→</button>
+  </div>
+
+  <script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    const navDots = document.getElementById('navDots');
+    const slideCounter = document.getElementById('slideCounter');
+    const progressBar = document.getElementById('progressBar');
+
+    // Create navigation dots
+    for (let i = 0; i < totalSlides; i++) {
+      const dot = document.createElement('div');
+      dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+      dot.onclick = () => goToSlide(i);
+      navDots.appendChild(dot);
+    }
+
+    function updateSlide() {
+      slides.forEach((slide, index) => {
+        slide.classList.toggle('active', index === currentSlide);
+      });
+      
+      // Update dots
+      document.querySelectorAll('.nav-dot').forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentSlide);
+      });
+      
+      // Update counter
+      slideCounter.textContent = `${currentSlide + 1} / ${totalSlides}`;
+      
+      // Update progress bar
+      progressBar.style.width = `${((currentSlide + 1) / totalSlides) * 100}%`;
+      
+      // Update button states
+      document.getElementById('prevBtn').disabled = currentSlide === 0;
+      document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+    }
+
+    function navigate(direction) {
+      const newSlide = currentSlide + direction;
+      if (newSlide >= 0 && newSlide < totalSlides) {
+        currentSlide = newSlide;
+        updateSlide();
+      }
+    }
+
+    function goToSlide(index) {
+      currentSlide = index;
+      updateSlide();
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        e.preventDefault();
+        navigate(1);
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        navigate(-1);
+      } else if (e.key === 'Home') {
+        e.preventDefault();
+        goToSlide(0);
+      } else if (e.key === 'End') {
+        e.preventDefault();
+        goToSlide(totalSlides - 1);
+      }
+    });
+
+    // Touch/swipe support
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    document.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    });
+
+    document.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    });
+
+    function handleSwipe() {
+      const swipeThreshold = 50;
+      const diff = touchStartX - touchEndX;
+      
+      if (Math.abs(diff) > swipeThreshold) {
+        if (diff > 0) {
+          navigate(1); // Swipe left = next
+        } else {
+          navigate(-1); // Swipe right = previous
+        }
+      }
+    }
+
+    // Initialize
+    updateSlide();
+  </script>
+</body>
+</html>
