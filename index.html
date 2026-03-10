@@ -37,6 +37,33 @@
     .presenter-info { position: absolute; bottom: 40px; left: 50px; text-align: left; }
     .presenter-name { font-size: 14px; font-weight: 600; color: white; }
     .presenter-role { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 3px; }
+    
+    /* Highlighted College Name */
+    .college-highlight { 
+      background: linear-gradient(135deg, #22c55e 0%, #06b6d4 50%, #4F5DFF 100%); 
+      -webkit-background-clip: text; 
+      -webkit-text-fill-color: transparent; 
+      background-clip: text; 
+      font-weight: 700;
+      font-size: 14px;
+      text-shadow: 0 0 30px rgba(34, 197, 94, 0.5);
+    }
+    .college-highlight-large { 
+      background: linear-gradient(135deg, #22c55e 0%, #06b6d4 50%, #4F5DFF 100%); 
+      -webkit-background-clip: text; 
+      -webkit-text-fill-color: transparent; 
+      background-clip: text; 
+      font-weight: 700;
+      text-shadow: 0 0 30px rgba(34, 197, 94, 0.5);
+    }
+    .presenter-name-highlight {
+      background: linear-gradient(135deg, #fff 0%, #818CF8 100%); 
+      -webkit-background-clip: text; 
+      -webkit-text-fill-color: transparent; 
+      background-clip: text;
+      font-weight: 700;
+      font-size: 16px;
+    }
 
     /* Slide 2 */
     .slide-2 { background: linear-gradient(180deg, #0a0a0a 0%, #0d1117 100%); }
@@ -190,6 +217,7 @@
       .candidate-cards { grid-template-columns: 1fr; }
       .preview-sidebar { display: none; }
       .cta-title { font-size: 28px; }
+      .contact-info { flex-wrap: wrap; gap: 16px; }
     }
   </style>
 </head>
@@ -213,8 +241,8 @@
         <div class="feature-pill">🎤 AI Interviews</div>
       </div>
       <div class="presenter-info">
-        <div class="presenter-name">Presented by [Your Name]</div>
-        <div class="presenter-role">College Presentation 2026</div>
+        <div class="presenter-name-highlight">Presented by Srikanth</div>
+        <div class="presenter-role"><span class="college-highlight">RK Degree College, Chittoor</span></div>
       </div>
       <div class="slide-number">01 / 07</div>
     </section>
@@ -603,7 +631,7 @@
           </div>
           <div class="contact-item">
             <div class="contact-icon">📍</div>
-            <span>[Your College Name]</span>
+            <span class="college-highlight-large">RK Degree College, Chittoor</span>
           </div>
         </div>
       </div>
