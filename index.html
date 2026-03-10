@@ -34,36 +34,14 @@
     .subtitle { font-size: 16px; color: rgba(255,255,255,0.7); max-width: 580px; line-height: 1.5; margin-bottom: 32px; }
     .feature-pills { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-bottom: 40px; }
     .feature-pill { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 8px 16px; border-radius: 100px; font-size: 13px; color: rgba(255,255,255,0.8); display: flex; align-items: center; gap: 6px; }
-    .presenter-info { position: absolute; bottom: 40px; left: 50px; text-align: left; }
-    .presenter-name { font-size: 14px; font-weight: 600; color: white; }
-    .presenter-role { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 3px; }
     
-    /* Highlighted College Name */
-    .college-highlight { 
-      background: linear-gradient(135deg, #22c55e 0%, #06b6d4 50%, #4F5DFF 100%); 
-      -webkit-background-clip: text; 
-      -webkit-text-fill-color: transparent; 
-      background-clip: text; 
-      font-weight: 700;
-      font-size: 14px;
-      text-shadow: 0 0 30px rgba(34, 197, 94, 0.5);
-    }
-    .college-highlight-large { 
-      background: linear-gradient(135deg, #22c55e 0%, #06b6d4 50%, #4F5DFF 100%); 
-      -webkit-background-clip: text; 
-      -webkit-text-fill-color: transparent; 
-      background-clip: text; 
-      font-weight: 700;
-      text-shadow: 0 0 30px rgba(34, 197, 94, 0.5);
-    }
-    .presenter-name-highlight {
-      background: linear-gradient(135deg, #fff 0%, #818CF8 100%); 
-      -webkit-background-clip: text; 
-      -webkit-text-fill-color: transparent; 
-      background-clip: text;
-      font-weight: 700;
-      font-size: 16px;
-    }
+    /* Presenter Info - Highlighted */
+    .presenter-info { position: absolute; bottom: 40px; left: 50px; text-align: left; padding: 16px 24px; background: linear-gradient(135deg, rgba(79, 93, 255, 0.15) 0%, rgba(6, 182, 212, 0.1) 100%); border: 1px solid rgba(79, 93, 255, 0.3); border-radius: 12px; backdrop-filter: blur(10px); }
+    .presenter-name { font-size: 16px; font-weight: 700; color: white; margin-bottom: 4px; }
+    .presenter-name span { background: linear-gradient(90deg, #4F5DFF, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .college-name { font-size: 14px; font-weight: 600; color: #22c55e; display: flex; align-items: center; gap: 6px; }
+    .college-name::before { content: '📍'; font-size: 12px; }
+    .presenter-role { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 4px; }
 
     /* Slide 2 */
     .slide-2 { background: linear-gradient(180deg, #0a0a0a 0%, #0d1117 100%); }
@@ -186,9 +164,13 @@
     .cta-button { padding: 14px 28px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; text-decoration: none; }
     .cta-button-primary { background: linear-gradient(135deg, #4F5DFF 0%, #7C3AED 100%); color: white; border: none; box-shadow: 0 6px 20px rgba(79, 93, 255, 0.3); }
     .cta-button-secondary { background: transparent; color: white; border: 1px solid rgba(255,255,255,0.2); }
+    
+    /* Contact Info - Highlighted College */
     .contact-info { display: flex; gap: 32px; justify-content: center; }
     .contact-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: rgba(255,255,255,0.6); }
     .contact-icon { width: 28px; height: 28px; background: rgba(255,255,255,0.05); border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 13px; }
+    .contact-item.highlight { background: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(16, 163, 74, 0.1) 100%); border: 1px solid rgba(34, 197, 94, 0.3); padding: 10px 18px; border-radius: 100px; color: #22c55e; font-weight: 600; }
+    .contact-item.highlight .contact-icon { background: rgba(34, 197, 94, 0.2); }
 
     /* Navigation */
     .nav-controls { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 12px; z-index: 1000; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); padding: 8px 16px; border-radius: 100px; border: 1px solid rgba(255,255,255,0.1); }
@@ -217,7 +199,8 @@
       .candidate-cards { grid-template-columns: 1fr; }
       .preview-sidebar { display: none; }
       .cta-title { font-size: 28px; }
-      .contact-info { flex-wrap: wrap; gap: 16px; }
+      .presenter-info { left: 25px; bottom: 30px; padding: 12px 16px; }
+      .contact-info { flex-direction: column; gap: 12px; }
     }
   </style>
 </head>
@@ -241,8 +224,9 @@
         <div class="feature-pill">🎤 AI Interviews</div>
       </div>
       <div class="presenter-info">
-        <div class="presenter-name-highlight">Presented by Srikanth</div>
-        <div class="presenter-role"><span class="college-highlight">RK Degree College, Chittoor</span></div>
+        <div class="presenter-name">Presented by <span>Srikanth</span></div>
+        <div class="college-name">RK Degree College, Chittoor</div>
+        <div class="presenter-role">Academic Year 2025-26</div>
       </div>
       <div class="slide-number">01 / 07</div>
     </section>
@@ -629,9 +613,9 @@
             <div class="contact-icon">📧</div>
             <span>hello@nexa1.ai</span>
           </div>
-          <div class="contact-item">
+          <div class="contact-item highlight">
             <div class="contact-icon">📍</div>
-            <span class="college-highlight-large">RK Degree College, Chittoor</span>
+            <span>RK Degree College, Chittoor</span>
           </div>
         </div>
       </div>
